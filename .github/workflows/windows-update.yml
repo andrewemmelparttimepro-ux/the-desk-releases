@@ -1,0 +1,44 @@
+name: Windows update smoke
+on:
+  workflow_dispatch:
+    inputs:
+      from:
+        description: Installed release tag
+        required: true
+        default: windows-v0.1.4
+      to:
+        description: Expected update version
+        required: true
+        default: 0.1.5
+permissions:
+  contents: read
+jobs:
+  update:
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: npm install --no-save playwright-core@1.60.0 @electron/asar@4.0.1
+      - name: Download and install prior release
+        shell: pwsh
+        env:
+          FROM_TAG: ${{ inputs.from }}
+        run: |
+          $url = "https://github.com/$env:GITHUB_REPOSITORY/releases/download/$env:FROM_TAG/The-Desk-Setup.exe"
+          Invoke-WebRequest $url -OutFile "$env:RUNNER_TEMP\DeskSetup.exe"
+          $p = Start-Process -FilePath "$env:RUNNER_TEMP\DeskSetup.exe" -ArgumentList '/S',"/D=$env:RUNNER_TEMP\DeskSmoke" -PassThru
+          if (-not $p.WaitForExit(180000)) { throw 'Installer timed out' }
+          if ($p.ExitCode -ne 0) { throw "Installer failed: $($p.ExitCode)" }
+      - name: Download, restart, install and retain access
+        shell: pwsh
+        env:
+          EXPECTED_VERSION: ${{ inputs.to }}
+        run: node windows-update-smoke.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: windows-update-evidence
+          path: evidence

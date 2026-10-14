@@ -1,0 +1,68 @@
+const fs = require('node:fs');
+const path = require('node:path');
+const cp = require('node:child_process');
+const assert = require('node:assert/strict');
+const { _electron } = require('playwright-core');
+const asar = require('@electron/asar');
+const executable = path.join(process.env.RUNNER_TEMP, 'DeskSmoke', 'The Desk.exe');
+const expected = process.env.EXPECTED_VERSION;
+fs.mkdirSync('evidence', { recursive: true });
+const delay = ms => new Promise(r => setTimeout(r, ms));
+(async () => {
+  // A disposable CI account and fake offline home; no customer connection is used.
+  let app = await _electron.launch({ executablePath: executable, timeout: 60000 });
+  const first = await app.firstWindow();
+  await first.waitForFunction(() => !!window.desk);
+  const start = await first.evaluate(() => window.desk.call('bootstrap'));
+  assert(!start.version.startsWith(expected), 'The test must upgrade from a different version.');
+  await app.evaluate(({ app, safeStorage }) => {
+    const fs = require('node:fs'), path = require('node:path');
+    const state = { homes: [{id:'smoke', origin:'http://127.0.0.1:1', token:'test-only',label:'Update test',person:'Test member',role:'member',drafts:{room:{text:'Draft kept through update',files:[],clientId:'smoke-draft'}}}], selected:'smoke', preferences:{theme:'paper',notifications:false} };
+    fs.writeFileSync(path.join(app.getPath('userData'), 'desk-access.enc'), safeStorage.encryptString(JSON.stringify(state)));
+  });
+  await app.close();
+  app = await _electron.launch({ executablePath: executable, timeout: 60000 });
+  const oldPid = app.process().pid;
+  const window = await app.firstWindow();
+  await window.waitForFunction(() => !!window.desk);
+  await window.evaluate(() => window.desk.call('update', {install:false}));
+  await window.getByRole('button',{name:'Download update',exact:true}).waitFor({timeout:90000});
+  await window.screenshot({path:'evidence/update-available.png'});
+  await window.getByRole('button',{name:'Download update',exact:true}).click();
+  await window.getByRole('button',{name:'Restart and install',exact:true}).waitFor({timeout:180000});
+  const ready = await window.evaluate(() => window.desk.call('bootstrap'));
+  assert.equal(ready.update.version, expected);
+  assert.equal(ready.update.status, 'ready');
+  await window.screenshot({path:'evidence/update-ready.png'});
+  // Accept the app's restart confirmation, leaving the real updater/installer untouched.
+  const saved = await app.evaluate(({app, dialog, safeStorage}) => {
+    const fs=require('node:fs'),path=require('node:path');
+    const filename=path.join(app.getPath('userData'),'desk-access.enc');
+    dialog.showMessageBox=async()=>({response:0,checkboxChecked:false});
+    return {filename, state:JSON.parse(safeStorage.decryptString(fs.readFileSync(filename)))};
+  });
+  assert.equal(saved.state.homes[0].drafts.room.text, 'Draft kept through update');
+  const closed = new Promise(resolve => app.process().once('exit', resolve));
+  await window.getByRole('button',{name:'Restart and install',exact:true}).click();
+  await Promise.race([closed, delay(90000).then(()=>{throw Error('Old app did not exit');})]);
+  let installed, newPid;
+  for(let attempt=0; attempt<90; attempt++) {
+    await delay(2000);
+    try {
+      installed=JSON.parse(asar.extractFile(path.join(path.dirname(executable),'resources','app.asar'),'package.json').toString());
+      const processes=JSON.parse(cp.execFileSync('powershell.exe',['-NoProfile','-Command',`Get-CimInstance Win32_Process | Where-Object { $_.ExecutablePath -eq '${executable.replaceAll("'","''")}' -and $_.CommandLine -notmatch '--type=' } | Select-Object ProcessId | ConvertTo-Json -Compress`],{encoding:'utf8'}));
+      const candidates=Array.isArray(processes)?processes:[processes];
+      newPid=candidates.find(x=>x && x.ProcessId!==oldPid)?.ProcessId;
+      if(installed.version===expected && newPid)break;
+    }catch{}
+  }
+  assert.equal(installed?.version,expected,'The new version must be installed.');
+  assert(newPid,'The installer must reopen The Desk.');
+  assert(fs.existsSync(saved.filename),'Saved access must remain after updating.');
+  // Windows protects safeStorage with this CI user's DPAPI. The updated app's fresh
+  // process receives a second-instance notification; the data file remains owned here.
+  const after=fs.readFileSync(saved.filename);
+  assert(after.length>100);
+  fs.writeFileSync('evidence/result.json',JSON.stringify({from:start.version,to:installed.version,downloadedVersion:ready.update.version,oldPid,newPid,installerRelaunched:true,savedAccessFileRetained:true,draftSavedBeforeRestart:saved.state.homes[0].drafts.room.text,platform:process.platform},null,2));
+  console.log('PASS', start.version, '->', installed.version, 'downloaded, installed, relaunched; access file retained.');
+})().catch(e=>{console.error(e);process.exitCode=1;});
