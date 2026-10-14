@@ -45,13 +45,12 @@ setTimeout(()=>{console.error('Windows update smoke exceeded six minutes');proce
   assert.equal(ready.update.status, 'ready');
   await window.screenshot({path:'evidence/update-ready.png'});
   // Accept the app's restart confirmation, leaving the real updater/installer untouched.
-  const saved = await app.evaluate(({app, dialog, safeStorage}, evidence) => {
+  const saved = await app.evaluate(({app, dialog, safeStorage}) => {
     const fs=process.getBuiltinModule('node:fs'),path=process.getBuiltinModule('node:path');
     const filename=path.join(app.getPath('userData'),'desk-access.enc');
     dialog.showMessageBox=async()=>({response:0,checkboxChecked:false});
-    app.on('before-quit',()=>{fs.copyFileSync(filename,path.join(evidence,'access-before-install.enc'));});
     return {filename, state:JSON.parse(safeStorage.decryptString(fs.readFileSync(filename)))};
-  }, path.resolve('evidence'));
+  });
   assert.equal(saved.state.homes[0].drafts.room.text, 'Draft kept through update');
   const closed = new Promise(resolve => app.process().once('exit', resolve));
   step('Restarting to install');
@@ -73,12 +72,25 @@ setTimeout(()=>{console.error('Windows update smoke exceeded six minutes');proce
   assert.equal(installed?.version,expected,'The new version must be installed.');
   assert(newPid,'The installer must reopen The Desk.');
   assert(fs.existsSync(saved.filename),'Saved access must remain after updating.');
-  // Windows protects safeStorage with this CI user's DPAPI. The updated app's fresh
-  // process receives a second-instance notification; the data file remains owned here.
-  const after=fs.readFileSync(saved.filename);
-  assert(after.equals(fs.readFileSync('evidence/access-before-install.enc')), 'Installer must preserve the exact encrypted access and drafts saved before quitting.');
-  fs.unlinkSync('evidence/access-before-install.enc');
-  fs.writeFileSync('evidence/result.json',JSON.stringify({from:start.version,to:installed.version,downloadedVersion:ready.update.version,oldPid,newPid,installerRelaunched:true,savedAccessFileRetained:true,encryptedAccessAndDraftsUnchanged:true,draftSavedBeforeRestart:saved.state.homes[0].drafts.room.text,platform:process.platform},null,2));
   step('Installer reopened the new version');
+  // Close the window the installer just opened normally, then attach the test
+  // harness on launch. No process is force-killed and no customer state is used.
+  cp.execFileSync('powershell.exe',['-NoProfile','-Command',`$desk = Get-Process -Id ${newPid}; if (-not $desk.WaitForInputIdle(15000)) { throw 'Updated window did not become ready' }; if (-not $desk.CloseMainWindow()) { throw 'Updated window did not accept close' }; if (-not $desk.WaitForExit(15000)) { throw 'Updated window did not close' }`],{stdio:'inherit'});
+  app = ownedApp = await _electron.launch({ executablePath: executable, timeout: 60000 });
+  const updatedWindow = await app.firstWindow();
+  await updatedWindow.waitForFunction(() => !!window.desk);
+  const restored = await updatedWindow.evaluate(() => window.desk.call('bootstrap'));
+  assert(restored.version.startsWith(expected));
+  assert.equal(restored.selected, 'smoke');
+  assert.equal(restored.homes[0].person, 'Test member');
+  assert.equal(restored.drafts.room.text, saved.state.homes[0].drafts.room.text);
+  const after = await app.evaluate(({app, safeStorage}) => {
+    const fs=process.getBuiltinModule('node:fs'),path=process.getBuiltinModule('node:path');
+    return JSON.parse(safeStorage.decryptString(fs.readFileSync(path.join(app.getPath('userData'),'desk-access.enc'))));
+  });
+  assert.deepEqual(after,saved.state,'Saved connection, access, preferences and drafts must survive updating.');
+  await updatedWindow.screenshot({path:'evidence/updated-with-saved-access.png'});
+  await app.close();
+  fs.writeFileSync('evidence/result.json',JSON.stringify({from:start.version,to:installed.version,downloadedVersion:ready.update.version,oldPid,newPid,installerRelaunched:true,savedAccessFileRetained:true,connectionAndDraftsRestoredByNewApp:true,savedContentUnchanged:true,platform:process.platform},null,2));
   console.log('PASS', start.version, '->', installed.version, 'downloaded, installed, relaunched; access file retained.');
 })().then(()=>process.exit(0)).catch(async e=>{console.error(e);try{await ownedApp?.close()}catch{}process.exit(1);});
