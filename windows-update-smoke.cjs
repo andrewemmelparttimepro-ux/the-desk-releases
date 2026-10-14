@@ -35,12 +35,13 @@ const delay = ms => new Promise(r => setTimeout(r, ms));
   assert.equal(ready.update.status, 'ready');
   await window.screenshot({path:'evidence/update-ready.png'});
   // Accept the app's restart confirmation, leaving the real updater/installer untouched.
-  const saved = await app.evaluate(({app, dialog, safeStorage}) => {
+  const saved = await app.evaluate(({app, dialog, safeStorage}, evidence) => {
     const fs=require('node:fs'),path=require('node:path');
     const filename=path.join(app.getPath('userData'),'desk-access.enc');
     dialog.showMessageBox=async()=>({response:0,checkboxChecked:false});
+    app.on('before-quit',()=>{fs.copyFileSync(filename,path.join(evidence,'access-before-install.enc'));});
     return {filename, state:JSON.parse(safeStorage.decryptString(fs.readFileSync(filename)))};
-  });
+  }, path.resolve('evidence'));
   assert.equal(saved.state.homes[0].drafts.room.text, 'Draft kept through update');
   const closed = new Promise(resolve => app.process().once('exit', resolve));
   await window.getByRole('button',{name:'Restart and install',exact:true}).click();
@@ -62,7 +63,8 @@ const delay = ms => new Promise(r => setTimeout(r, ms));
   // Windows protects safeStorage with this CI user's DPAPI. The updated app's fresh
   // process receives a second-instance notification; the data file remains owned here.
   const after=fs.readFileSync(saved.filename);
-  assert(after.length>100);
-  fs.writeFileSync('evidence/result.json',JSON.stringify({from:start.version,to:installed.version,downloadedVersion:ready.update.version,oldPid,newPid,installerRelaunched:true,savedAccessFileRetained:true,draftSavedBeforeRestart:saved.state.homes[0].drafts.room.text,platform:process.platform},null,2));
+  assert(after.equals(fs.readFileSync('evidence/access-before-install.enc')), 'Installer must preserve the exact encrypted access and drafts saved before quitting.');
+  fs.unlinkSync('evidence/access-before-install.enc');
+  fs.writeFileSync('evidence/result.json',JSON.stringify({from:start.version,to:installed.version,downloadedVersion:ready.update.version,oldPid,newPid,installerRelaunched:true,savedAccessFileRetained:true,encryptedAccessAndDraftsUnchanged:true,draftSavedBeforeRestart:saved.state.homes[0].drafts.room.text,platform:process.platform},null,2));
   console.log('PASS', start.version, '->', installed.version, 'downloaded, installed, relaunched; access file retained.');
 })().catch(e=>{console.error(e);process.exitCode=1;});
