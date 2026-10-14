@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>Get The Desk · NDAI</title>
+<style>
+  :root { font: 16px/1.55 system-ui, sans-serif; color: #e8e8e9; background: #101214; }
+  body { max-width: 1040px; margin: auto; padding: 64px 24px; }
+  .brand { color: #9caebf; letter-spacing: .18em; font-size: 12px; }
+  h1 { font-size: clamp(36px, 6vw, 60px); line-height: 1.1; margin: 24px 0; letter-spacing: -.04em; }
+  p { color: #b7bec6; max-width: 680px; }
+  .platforms { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 40px 0; }
+  article { border: 1px solid #31383d; padding: 24px; border-radius: 12px; display: flex; flex-direction: column; }
+  h2 { margin: 0; font-size: 22px; }
+  article p { font-size: 14px; flex: 1; }
+  a { color: #c4d9ed; }
+  .download { display: inline-block; padding: 12px 16px; border: 1px solid #839aaf; border-radius: 7px; text-decoration: none; text-align: center; }
+  .status { color: #a8b3be; font-size: 14px; }
+  footer { border-top: 1px solid #31383d; padding-top: 24px; font-size: 13px; }
+  @media(max-width: 720px) { .platforms { grid-template-columns: 1fr; } body { padding-top: 36px; } }
+</style>
+<div class="brand">NDAI / THE DESK</div>
+<h1>Your Desk. On your device.</h1>
+<p>Install The Desk, then connect with the invitation from your business. This page works from any internet connection. Keep it bookmarked for a new device.</p>
+<div class="platforms">
+  <article>
+    <h2>Windows</h2>
+    <p>Windows 10 or later, 64-bit. After installation, use Check for updates in the app. Saved connections stay with you.</p>
+    <p class="status">Current preview. Windows may show an unrecognized-app notice.</p>
+    <a class="download" href="https://github.com/andrewemmelparttimepro-ux/the-desk-releases/releases/latest/download/The-Desk-Setup.exe">Download for Windows</a>
+  </article>
+  <article>
+    <h2>Mac</h2>
+    <p>macOS 15 or later, Apple Silicon and Intel. Open the download and move The Desk to Applications. Future updates install from the app.</p>
+    <div id="mac" class="status">Checking Mac availability…</div>
+  </article>
+  <article>
+    <h2>iPhone &amp; iPad</h2>
+    <p>iOS 17 or later. Install through TestFlight or the App Store. Enable Automatic Updates there to stay current.</p>
+    <div id="ios" class="status">Checking iPhone and iPad availability…</div>
+  </article>
+</div>
+<h2>Already have The Desk?</h2>
+<p>On Windows or Mac, choose Check for updates inside the app. If your older copy has no update option, install the current version once from this page. Keep your existing app data; your business connection remains saved.</p>
+<p>On iPhone and iPad, open The Desk in TestFlight or the App Store and choose Update. The Desk's Settings can take you to the right page.</p>
+<footer>Installers are provided by NDAI. Your staff and conversations stay on your business's Desk. <a href="https://ndai.pro">ndai.pro</a></footer>
+<script>
+  function button(target, url, label) {
+    const link = document.createElement('a'); link.className = 'download'; link.href = url; link.textContent = label;
+    document.getElementById(target).replaceChildren(link);
+  }
+  async function load(file) { const response = await fetch(file, {cache:'no-store'}); if(!response.ok) throw new Error('unavailable'); return response.json(); }
+  load('macos/release.json').then(release => {
+    const url = new URL(release.url);
+    if(url.protocol !== 'https:' || url.hostname !== 'github.com' || !url.pathname.startsWith('/andrewemmelparttimepro-ux/the-desk-releases/releases/download/')) throw new Error('unavailable');
+    button('mac', url.href, 'Download for Mac · ' + release.version);
+  }).catch(() => document.getElementById('mac').textContent = 'The Mac download is being prepared. Please check again shortly.');
+  load('ios/releases.json').then(catalog => {
+    const release = catalog.appStore || (catalog.testFlight && Date.parse(catalog.testFlight.expiresAt) > Date.now() ? catalog.testFlight : null);
+    if(catalog.schema !== 1 || !release) throw new Error('unavailable');
+    const url = new URL(release.url);
+    if(url.protocol !== 'https:' || !['apps.apple.com', 'testflight.apple.com'].includes(url.hostname)) throw new Error('unavailable');
+    button('ios', url.href, url.hostname === 'apps.apple.com' ? 'Open App Store' : 'Join TestFlight');
+  }).catch(() => document.getElementById('ios').textContent = 'Apple distribution is being set up. The install link will appear here when it is ready.');
+</script>
+</html>
