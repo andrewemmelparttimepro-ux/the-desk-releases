@@ -22,7 +22,7 @@ setTimeout(()=>{console.error('Windows update smoke exceeded six minutes');proce
   step('Baseline version '+start.version);
   assert(!start.version.startsWith(expected), 'The test must upgrade from a different version.');
   await app.evaluate(({ app, safeStorage }) => {
-    const fs = require('node:fs'), path = require('node:path');
+    const fs = process.getBuiltinModule('node:fs'), path = process.getBuiltinModule('node:path');
     const state = { homes: [{id:'smoke', origin:'http://127.0.0.1:1', token:'test-only',label:'Update test',person:'Test member',role:'member',drafts:{room:{text:'Draft kept through update',files:[],clientId:'smoke-draft'}}}], selected:'smoke', preferences:{theme:'paper',notifications:false} };
     fs.writeFileSync(path.join(app.getPath('userData'), 'desk-access.enc'), safeStorage.encryptString(JSON.stringify(state)));
   });
@@ -46,7 +46,7 @@ setTimeout(()=>{console.error('Windows update smoke exceeded six minutes');proce
   await window.screenshot({path:'evidence/update-ready.png'});
   // Accept the app's restart confirmation, leaving the real updater/installer untouched.
   const saved = await app.evaluate(({app, dialog, safeStorage}, evidence) => {
-    const fs=require('node:fs'),path=require('node:path');
+    const fs=process.getBuiltinModule('node:fs'),path=process.getBuiltinModule('node:path');
     const filename=path.join(app.getPath('userData'),'desk-access.enc');
     dialog.showMessageBox=async()=>({response:0,checkboxChecked:false});
     app.on('before-quit',()=>{fs.copyFileSync(filename,path.join(evidence,'access-before-install.enc'));});
@@ -61,7 +61,9 @@ setTimeout(()=>{console.error('Windows update smoke exceeded six minutes');proce
   for(let attempt=0; attempt<90; attempt++) {
     await delay(2000);
     try {
-      installed=JSON.parse(asar.extractFile(path.join(path.dirname(executable),'resources','app.asar'),'package.json').toString());
+      const archive = path.join(path.dirname(executable),'resources','app.asar');
+      asar.uncache(archive);
+      installed=JSON.parse(asar.extractFile(archive,'package.json').toString());
       const processes=JSON.parse(cp.execFileSync('powershell.exe',['-NoProfile','-Command',`Get-CimInstance Win32_Process | Where-Object { $_.ExecutablePath -eq '${executable.replaceAll("'","''")}' -and $_.CommandLine -notmatch '--type=' } | Select-Object ProcessId | ConvertTo-Json -Compress`],{encoding:'utf8'}));
       const candidates=Array.isArray(processes)?processes:[processes];
       newPid=candidates.find(x=>x && x.ProcessId!==oldPid)?.ProcessId;
