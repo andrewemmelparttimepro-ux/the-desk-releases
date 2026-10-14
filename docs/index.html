@@ -58,10 +58,16 @@
   }).catch(() => document.getElementById('mac').textContent = 'The Mac download is being prepared. Please check again shortly.');
   load('ios/releases.json').then(catalog => {
     const release = catalog.appStore || (catalog.testFlight && Date.parse(catalog.testFlight.expiresAt) > Date.now() ? catalog.testFlight : null);
-    if(catalog.schema !== 1 || !release) throw new Error('unavailable');
+    if(catalog.schema !== 1) throw new Error('unavailable');
+    if(!release) {
+      document.getElementById('ios').textContent = catalog.pendingReview
+        ? 'Submitted to Apple for TestFlight review. The install link will appear here automatically after approval.'
+        : 'The next iPhone and iPad release is being prepared. Please check again shortly.';
+      return;
+    }
     const url = new URL(release.url);
     if(url.protocol !== 'https:' || !['apps.apple.com', 'testflight.apple.com'].includes(url.hostname)) throw new Error('unavailable');
     button('ios', url.href, url.hostname === 'apps.apple.com' ? 'Open App Store' : 'Join TestFlight');
-  }).catch(() => document.getElementById('ios').textContent = 'Apple distribution is being set up. The install link will appear here when it is ready.');
+  }).catch(() => document.getElementById('ios').textContent = 'Could not check iPhone and iPad availability. Please reload this page.');
 </script>
 </html>
