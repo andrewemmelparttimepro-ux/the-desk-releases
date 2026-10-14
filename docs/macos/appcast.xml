@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="yes"?>
+<rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" version="2.0">
+    <channel>
+        <title>The Desk</title>
+        <item>
+            <title>0.2.35</title>
+            <pubDate>Wed, 14 Oct 2026 11:55:13 -0500</pubDate>
+            <sparkle:version>38</sparkle:version>
+            <sparkle:shortVersionString>0.2.35</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
+            <description sparkle:format="markdown"><![CDATA[The Desk now checks for updates from a public release channel. On Mac, install updates in the app and reopen with your saved business connection. On iPhone and iPad, Settings opens the correct TestFlight or App Store page when a release is available.
+
+This release includes rooms for selected people and staff, including a private room with only yourself. Rooms retain their conversations when closed and reopened.
+]]></description>
+            <enclosure url="https://github.com/andrewemmelparttimepro-ux/the-desk-releases/releases/download/macos-v0.2.35/The-Desk-macOS.zip" length="28289637" type="application/octet-stream" sparkle:edSignature="Up4e2AmWGpfMuUbmXJZcM5YmABZ2ZM6MumprpCH+JAu5SoL2YmRRFk1FFfBD/WVr/hQiIs41zMVlVF0/231JAQ=="/>
+        </item>
+    </channel>
+</rss>
