@@ -4,5 +4,11 @@
     "version": "1.4",
     "build": "10",
     "submittedAt": "2026-10-14T18:31:23Z"
+  },
+  "registered": {
+    "version": "1.5.1",
+    "build": "13",
+    "url": "https://andrewemmelparttimepro-ux.github.io/the-desk-releases/ios/registered/1.5.1-13/manifest.plist",
+    "expiresAt": "2027-07-25T06:27:50Z"
   }
 }
