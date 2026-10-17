@@ -10,5 +10,11 @@
     "build": "14",
     "url": "https://andrewemmelparttimepro-ux.github.io/the-desk-releases/ios/registered/1.5.1-14/manifest.plist",
     "expiresAt": "2027-07-25T06:27:50Z"
+  },
+  "testFlight": {
+    "version": "1.4",
+    "build": "10",
+    "url": "https://testflight.apple.com/join/EyTpNC3j",
+    "expiresAt": "2027-01-12T18:26:54Z"
   }
 }
