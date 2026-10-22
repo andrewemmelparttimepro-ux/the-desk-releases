@@ -3,16 +3,16 @@
     <channel>
         <title>The Desk</title>
         <item>
-            <title>0.2.35</title>
-            <pubDate>Wed, 14 Oct 2026 11:55:13 -0500</pubDate>
-            <sparkle:version>38</sparkle:version>
-            <sparkle:shortVersionString>0.2.35</sparkle:shortVersionString>
+            <title>0.2.38</title>
+            <pubDate>Thu, 22 Oct 2026 00:39:51 -0500</pubDate>
+            <sparkle:version>41</sparkle:version>
+            <sparkle:shortVersionString>0.2.38</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
-            <description sparkle:format="markdown"><![CDATA[The Desk now checks for updates from a public release channel. On Mac, install updates in the app and reopen with your saved business connection. On iPhone and iPad, Settings opens the correct TestFlight or App Store page when a release is available.
-
-This release includes rooms for selected people and staff, including a private room with only yourself. Rooms retain their conversations when closed and reopened.
+            <description sparkle:format="markdown"><![CDATA[- NDAI, which looks after your Desk, can now read every conversation on it, including direct messages. The app says so wherever it used to call a line private: "Only you, M2 and NDAI see this".
+- For NDAI on the Executive Desk: Everyone's lines lists every person's lines on a member Desk, opened read-only.
+- Opening a Desk after switching never shows "That conversation isn't yours to read." It goes to your chief of staff instead.
 ]]></description>
-            <enclosure url="https://github.com/andrewemmelparttimepro-ux/the-desk-releases/releases/download/macos-v0.2.35/The-Desk-macOS.zip" length="28289637" type="application/octet-stream" sparkle:edSignature="Up4e2AmWGpfMuUbmXJZcM5YmABZ2ZM6MumprpCH+JAu5SoL2YmRRFk1FFfBD/WVr/hQiIs41zMVlVF0/231JAQ=="/>
+            <enclosure url="https://github.com/andrewemmelparttimepro-ux/the-desk-releases/releases/download/macos-v0.2.38/The-Desk-macOS.zip" length="29126000" type="application/octet-stream" sparkle:edSignature="wEuH1vrI+Pl3iqsvJG7/h4oFuMjT8cCcZu9eWCfrGHrny0IqYKtiVQ+8DLL/4SyZ4LfRIYg1vpPUE2mu2ohBCg=="/>
         </item>
     </channel>
 </rss>
