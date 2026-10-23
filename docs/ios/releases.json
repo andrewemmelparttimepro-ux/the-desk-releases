@@ -12,9 +12,9 @@
     "expiresAt": "2027-07-25T06:27:50Z"
   },
   "testFlight": {
-    "version": "1.5.3",
-    "build": "16",
+    "version": "1.6.2",
+    "build": "21",
     "url": "https://testflight.apple.com/join/EyTpNC3j",
-    "expiresAt": "2027-01-16T16:30:11Z"
+    "expiresAt": "2027-01-21T16:52:29Z"
   }
 }
