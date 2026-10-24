@@ -3,16 +3,16 @@
     <channel>
         <title>The Desk</title>
         <item>
-            <title>0.2.38</title>
-            <pubDate>Thu, 22 Oct 2026 00:39:51 -0500</pubDate>
-            <sparkle:version>41</sparkle:version>
-            <sparkle:shortVersionString>0.2.38</sparkle:shortVersionString>
+            <title>0.2.39</title>
+            <pubDate>Sat, 24 Oct 2026 00:42:57 -0500</pubDate>
+            <sparkle:version>42</sparkle:version>
+            <sparkle:shortVersionString>0.2.39</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
-            <description sparkle:format="markdown"><![CDATA[- NDAI, which looks after your Desk, can now read every conversation on it, including direct messages. The app says so wherever it used to call a line private: "Only you, M2 and NDAI see this".
-- For NDAI on the Executive Desk: Everyone's lines lists every person's lines on a member Desk, opened read-only.
-- Opening a Desk after switching never shows "That conversation isn't yours to read." It goes to your chief of staff instead.
+            <description sparkle:format="markdown"><![CDATA[Sign in and connect from the conversation in one tap. Private sign-in stays unfinished when you switch apps, and input problems stay visible until you resolve them.
+
+Chats keep your reading position during replies and updates. Home is always within reach on iPhone and iPad. Needs-you notices open the right message, and connection errors explain the next step.
 ]]></description>
-            <enclosure url="https://github.com/andrewemmelparttimepro-ux/the-desk-releases/releases/download/macos-v0.2.38/The-Desk-macOS.zip" length="29126000" type="application/octet-stream" sparkle:edSignature="wEuH1vrI+Pl3iqsvJG7/h4oFuMjT8cCcZu9eWCfrGHrny0IqYKtiVQ+8DLL/4SyZ4LfRIYg1vpPUE2mu2ohBCg=="/>
+            <enclosure url="https://github.com/andrewemmelparttimepro-ux/the-desk-releases/releases/download/macos-v0.2.39/The-Desk-macOS.zip" length="29888095" type="application/octet-stream" sparkle:edSignature="BjygTAv13wtr9m6WLz1UgJbqhZgHcO6lgNPisYkGTKIwN0zd/0Y6+UJwIHpHTwGLvHCp6ZhYyOEU/MJpIAxZDw=="/>
         </item>
     </channel>
 </rss>
