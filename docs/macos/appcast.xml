@@ -3,16 +3,18 @@
     <channel>
         <title>The Desk</title>
         <item>
-            <title>0.2.39</title>
-            <pubDate>Sat, 24 Oct 2026 00:42:57 -0500</pubDate>
-            <sparkle:version>42</sparkle:version>
-            <sparkle:shortVersionString>0.2.39</sparkle:shortVersionString>
+            <title>0.2.40</title>
+            <pubDate>Sat, 24 Oct 2026 03:44:08 -0500</pubDate>
+            <sparkle:version>43</sparkle:version>
+            <sparkle:shortVersionString>0.2.40</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
-            <description sparkle:format="markdown"><![CDATA[Sign in and connect from the conversation in one tap. Private sign-in stays unfinished when you switch apps, and input problems stay visible until you resolve them.
+            <description sparkle:format="markdown"><![CDATA[Meetings now save audio on your device while the call reconnects. Choose Just take notes, Agent on call, or Agent runs it from one Meeting button.
 
-Chats keep your reading position during replies and updates. Home is always within reach on iPhone and iPad. Needs-you notices open the right message, and connection errors explain the next step.
+Saved audio retries upload after you leave or reopen The Desk. Recording interruptions and mute keep a visible history, with Resume recording when needed.
+
+Includes the latest sign-in, Home and conversation improvements.
 ]]></description>
-            <enclosure url="https://github.com/andrewemmelparttimepro-ux/the-desk-releases/releases/download/macos-v0.2.39/The-Desk-macOS.zip" length="29888095" type="application/octet-stream" sparkle:edSignature="BjygTAv13wtr9m6WLz1UgJbqhZgHcO6lgNPisYkGTKIwN0zd/0Y6+UJwIHpHTwGLvHCp6ZhYyOEU/MJpIAxZDw=="/>
+            <enclosure url="https://github.com/andrewemmelparttimepro-ux/the-desk-releases/releases/download/macos-v0.2.40/The-Desk-macOS.zip" length="30172383" type="application/octet-stream" sparkle:edSignature="NUQ+I8sp5iBhrtCC/TrDhOvC96mSRyCOF2xC6tqg82b9r3hcU8rXMvoTmj9B3uBMbaofr3El6tngSs9SNGNFCg=="/>
         </item>
     </channel>
 </rss>
