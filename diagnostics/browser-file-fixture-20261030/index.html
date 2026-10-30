@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex, nofollow, noarchive"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Vry+6bYYsLHOPE0Vyzp4RLMokalEC2/V/0DHlE+hZO8='; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; img-src 'none'; style-src 'none'; frame-src 'none'"><title>Desk file transfer fixture</title></head>
+<body><h1>Desk file transfer fixture</h1><p>Use only a synthetic text file. Its content stays in this page and is not submitted.</p>
+<label>Choose a synthetic file <input id="file" type="file" accept=".txt,text/plain"></label><p id="result" role="status">No file selected.</p>
+<button id="download" type="button">Download synthetic file</button>
+<script>
+const input = document.querySelector('#file');
+input.addEventListener('change', async () => {
+  const file = input.files[0];
+  if (!file) return;
+  if (file.size > 1024) { document.querySelector('#result').textContent = 'Choose a file under 1 KB.'; return; }
+  const bytes = await file.arrayBuffer();
+  const hash = [...new Uint8Array(await crypto.subtle.digest('SHA-256', bytes))].map(x => x.toString(16).padStart(2, '0')).join('');
+  document.querySelector('#result').textContent = `${file.name} — ${bytes.byteLength} bytes — SHA-256 ${hash}`;
+});
+document.querySelector('#download').addEventListener('click', () => {
+  const url = URL.createObjectURL(new Blob(['Desk synthetic download fixture v1\n'], {type:'text/plain'}));
+  const link = document.createElement('a'); link.href = url; link.download = 'desk-synthetic-download.txt'; link.click();
+  setTimeout(() => URL.revokeObjectURL(url), 60000);
+});
+</script></body></html>
