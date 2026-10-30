@@ -3,18 +3,22 @@
     <channel>
         <title>The Desk</title>
         <item>
-            <title>0.2.40</title>
-            <pubDate>Sat, 24 Oct 2026 03:44:08 -0500</pubDate>
-            <sparkle:version>43</sparkle:version>
-            <sparkle:shortVersionString>0.2.40</sparkle:shortVersionString>
+            <title>2.0.9</title>
+            <pubDate>Thu, 29 Oct 2026 23:03:47 -0500</pubDate>
+            <sparkle:version>106</sparkle:version>
+            <sparkle:shortVersionString>2.0.9</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
-            <description sparkle:format="markdown"><![CDATA[Meetings now save audio on your device while the call reconnects. Choose Just take notes, Agent on call, or Agent runs it from one Meeting button.
+            <description sparkle:format="markdown"><![CDATA[The Desk 2.0.9
 
-Saved audio retries upload after you leave or reopen The Desk. Recording interruptions and mute keep a visible history, with Resume recording when needed.
+- Recover a saved Desk connection while keeping drafts and attachments available.
+- Open browser and private sign-in controls on Mac, iPhone and iPad.
+- Check a saved website sign-in and continue the original task when it is ready.
+- Reopen interrupted private screens and expired sign-in requests.
+- Expand long staff messages when you want to read the full text.
 
-Includes the latest sign-in, Home and conversation improvements.
+Known issue: Browser tab access is still being repaired on affected Desks.
 ]]></description>
-            <enclosure url="https://github.com/andrewemmelparttimepro-ux/the-desk-releases/releases/download/macos-v0.2.40/The-Desk-macOS.zip" length="30172383" type="application/octet-stream" sparkle:edSignature="NUQ+I8sp5iBhrtCC/TrDhOvC96mSRyCOF2xC6tqg82b9r3hcU8rXMvoTmj9B3uBMbaofr3El6tngSs9SNGNFCg=="/>
+            <enclosure url="https://github.com/andrewemmelparttimepro-ux/the-desk-releases/releases/download/macos-v2.0.9/The-Desk-macOS.zip" length="31901933" type="application/octet-stream" sparkle:edSignature="wHDTk5+21S5npRl0D6kN5DLhKxjd1+76vzUMLBTlb5MkTagvcttlzVzC1RJgyr+QBFhc6AlRzHYITGJwLB9XBg=="/>
         </item>
     </channel>
 </rss>
