@@ -3,14 +3,18 @@
     <channel>
         <title>The Desk</title>
         <item>
-            <title>2.0.11</title>
-            <pubDate>Fri, 30 Oct 2026 15:47:52 -0500</pubDate>
-            <sparkle:version>108</sparkle:version>
-            <sparkle:shortVersionString>2.0.11</sparkle:shortVersionString>
+            <title>2.0.12</title>
+            <pubDate>Sat, 31 Oct 2026 12:12:24 -0500</pubDate>
+            <sparkle:version>109</sparkle:version>
+            <sparkle:shortVersionString>2.0.12</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
-            <description sparkle:format="markdown"><![CDATA[Retry browser connections and continue on saved pages. Activity details remain available.
+            <description sparkle:format="markdown"><![CDATA[The Desk for Mac 2.0.12
+
+- All Desks now uses your signed-in Executive Desk’s current addresses and visitor access.
+- Returning home follows your verified Executive Desk after it moves to another computer.
+- Canceling a visit or switching Desks prevents a delayed connection from interrupting your current work.
 ]]></description>
-            <enclosure url="https://github.com/andrewemmelparttimepro-ux/the-desk-releases/releases/download/macos-v2.0.11/The-Desk-macOS.zip" length="31998083" type="application/octet-stream" sparkle:edSignature="wQoIJ3BS/AcAKteWxU+ZRQHK1At+ABjvqJ7leK2DtmH2hWUQ9aPSc5Socrg3hejGwxowgYfIPs0NdV7bwX/BAA=="/>
+            <enclosure url="https://github.com/andrewemmelparttimepro-ux/the-desk-releases/releases/download/macos-v2.0.12/The-Desk-macOS.zip" length="32008103" type="application/octet-stream" sparkle:edSignature="KzF1bVWo7zxRDwr8fkyn9Fs7fWWDeTZVRdfM4MkVk461U0ZsRBf17d0YVKUADc554SKn6/zLhIri09yONqeaAw=="/>
         </item>
     </channel>
 </rss>
