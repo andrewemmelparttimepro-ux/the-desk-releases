@@ -3,22 +3,14 @@
     <channel>
         <title>The Desk</title>
         <item>
-            <title>2.0.9</title>
-            <pubDate>Thu, 29 Oct 2026 23:03:47 -0500</pubDate>
-            <sparkle:version>106</sparkle:version>
-            <sparkle:shortVersionString>2.0.9</sparkle:shortVersionString>
+            <title>2.0.11</title>
+            <pubDate>Fri, 30 Oct 2026 15:47:52 -0500</pubDate>
+            <sparkle:version>108</sparkle:version>
+            <sparkle:shortVersionString>2.0.11</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
-            <description sparkle:format="markdown"><![CDATA[The Desk 2.0.9
-
-- Recover a saved Desk connection while keeping drafts and attachments available.
-- Open browser and private sign-in controls on Mac, iPhone and iPad.
-- Check a saved website sign-in and continue the original task when it is ready.
-- Reopen interrupted private screens and expired sign-in requests.
-- Expand long staff messages when you want to read the full text.
-
-Known issue: Browser tab access is still being repaired on affected Desks.
+            <description sparkle:format="markdown"><![CDATA[Retry browser connections and continue on saved pages. Activity details remain available.
 ]]></description>
-            <enclosure url="https://github.com/andrewemmelparttimepro-ux/the-desk-releases/releases/download/macos-v2.0.9/The-Desk-macOS.zip" length="31901933" type="application/octet-stream" sparkle:edSignature="wHDTk5+21S5npRl0D6kN5DLhKxjd1+76vzUMLBTlb5MkTagvcttlzVzC1RJgyr+QBFhc6AlRzHYITGJwLB9XBg=="/>
+            <enclosure url="https://github.com/andrewemmelparttimepro-ux/the-desk-releases/releases/download/macos-v2.0.11/The-Desk-macOS.zip" length="31998083" type="application/octet-stream" sparkle:edSignature="wQoIJ3BS/AcAKteWxU+ZRQHK1At+ABjvqJ7leK2DtmH2hWUQ9aPSc5Socrg3hejGwxowgYfIPs0NdV7bwX/BAA=="/>
         </item>
     </channel>
 </rss>
